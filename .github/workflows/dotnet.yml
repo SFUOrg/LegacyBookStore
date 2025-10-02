@@ -10,23 +10,21 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      env:
-        Jwt__Key: ${{ secrets.JWT_KEY }}
-        Jwt__Issuer: ${{ secrets.JWT_ISSUER }}
-        Jwt__Audience: ${{ secrets.JWT_AUDIENCE }}
-        Jwt__ExpireMinutes: ${{ secrets.JWT_EXPIRE_MINUTES }}
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+        env:
+          Jwt__Key: ${{ secrets.JWT_KEY }}
+          Jwt__Issuer: ${{ secrets.JWT_ISSUER }}
+          Jwt__Audience: ${{ secrets.JWT_AUDIENCE }}
+          Jwt__ExpireMinutes: ${{ secrets.JWT_EXPIRE_MINUTES }}
