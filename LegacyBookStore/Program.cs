@@ -24,6 +24,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IBooksRepository, BooksRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddControllers();
+builder.Services.AddRazorPages();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -55,6 +56,7 @@ app.Use(async (context, next) =>
 });
 
 app.MapControllers();
+app.MapRazorPages(); 
 
 app.Run();
 
