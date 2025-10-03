@@ -121,7 +121,7 @@ public class BooksControllerTests : IClassFixture<CustomWebApplicationFactory<Pr
 
     [Theory]
     [InlineData("", "application/json", HttpStatusCode.BadRequest)]
-    //[InlineData("{\"title\":\"\",\"author\":\"\",\"price\":-12.99}", "application/json", HttpStatusCode.BadRequest)]
+    [InlineData("{\"title\":\"\",\"author\":\"\",\"price\":-12.99}", "application/json", HttpStatusCode.BadRequest)]
     public async Task AddBook_InvalidData_ReturnsBadRequest(string requestBody, string contentType, HttpStatusCode expectedStatusCode)
     {
         // Arrange
