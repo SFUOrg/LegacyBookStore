@@ -110,6 +110,7 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "LegacyBookStore");
 });
 
+
 app.UseRateLimiter();
 
 app.UseAuthentication();
