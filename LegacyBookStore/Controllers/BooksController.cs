@@ -4,12 +4,13 @@ using LegacyBookStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace LegacyBookStore.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-
+    [EnableRateLimiting("BooksRateLimit")]
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;

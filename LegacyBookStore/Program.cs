@@ -1,13 +1,14 @@
 ﻿
 using LegacyBookStore.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using LegacyBookStore.Interfaces;
-using LegacyBookStore.Services;
 using LegacyBookStore.Repository;
+using LegacyBookStore.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,34 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("BooksRateLimit", context =>
+    {
+        var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+        return RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: ip,
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 50,
+                Window = TimeSpan.FromSeconds(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0
+            });
+    });
+
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = 429;
+        context.HttpContext.Response.Headers["Retry-After"] = "1";
+        await context.HttpContext.Response.WriteAsync(
+            "{\"error\": \"Много запросов\"}",
+            cancellationToken: token
+        );
+    };
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -70,8 +99,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo 
-        { Title = "LegacyBookStore", Version = "v1" }
+    options.SwaggerDoc("v1", new OpenApiInfo
+    { Title = "LegacyBookStore", Version = "v1" }
     );
 });
 
@@ -87,12 +116,7 @@ app.UseSwaggerUI(options =>
 });
 
 
-app.UseCors();
-app.UseSwagger();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "LegacyBookStore");
-});
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
