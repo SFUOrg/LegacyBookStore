@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using LegacyBookStore.DTO;
 
 namespace LegacyBookStore.Controllers
 {
@@ -39,10 +40,19 @@ namespace LegacyBookStore.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateBook([FromBody] Models.Book book)
+        public async Task<IActionResult> CreateBook([FromBody] BookRequest request)
+
         {   
             try
             {
+                Book book = new Book
+                {
+                    Title = request.Title,
+                    Author = request.Author,
+                    Price = request.Price,
+                    Description = request.Description
+
+                };
                 var createdBook = await _bookService.CreateBookAsync(book);
                 return CreatedAtAction(nameof(GetBooks), new { id = createdBook.Id }, createdBook);
             }
