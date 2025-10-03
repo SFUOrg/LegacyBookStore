@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using LegacyBookStore.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.Common;
-using System.Linq;
-using LegacyBookStore.Data;
 
 namespace LegacyBookStore.Tests
 {
@@ -38,6 +38,16 @@ namespace LegacyBookStore.Tests
                     var connection = container.GetRequiredService<DbConnection>();
                     options.UseSqlite(connection);
                 });
+
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = "Test";
+                    options.DefaultChallengeScheme = "Test";
+                    options.DefaultForbidScheme = "Test";
+                })
+                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
+
+                services.AddAuthorization();
             });
 
             builder.UseEnvironment("Development");

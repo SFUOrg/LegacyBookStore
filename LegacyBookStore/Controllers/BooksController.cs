@@ -1,4 +1,8 @@
+﻿using LegacyBookStore.Data;
 using LegacyBookStore.Interfaces;
+using LegacyBookStore.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -34,6 +38,7 @@ namespace LegacyBookStore.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateBook([FromBody] Models.Book book)
         {   
             try
@@ -48,6 +53,7 @@ namespace LegacyBookStore.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteBook(int id)
         {
             var result = await _bookService.DeleteBookAsync(id);
