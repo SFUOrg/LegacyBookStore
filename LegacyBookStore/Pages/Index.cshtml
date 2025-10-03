@@ -1,10 +1,135 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Welcome";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    h1.display-4 {
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+    }
+
+    h2 {
+        color: #3498db;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    h3 {
+        color: #2c3e50;
+        margin-top: 1.5rem;
+        margin-bottom: 0.8rem;
+        font-size: 1.3rem;
+    }
+
+    p, ul {
+        font-size: 1.05rem;
+    }
+
+    code {
+        background-color: #f1f1f1;
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+        font-family: Consolas, monospace;
+        color: #e74c3c;
+        font-size: 0.95em;
+    }
+
+    ul {
+        padding-left: 1.5rem;
+    }
+
+    li {
+        margin-bottom: 0.6rem;
+    }
+
+    strong {
+        color: #2c3e50;
+    }
+
+    a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    .endpoint-section {
+        background: white;
+        border-radius: 8px;
+        padding: 1.2rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        margin-top: 1rem;
+    }
+
+    .repo-links {
+        margin-top: 0.5rem;
+    }
+
+        .repo-links a {
+            display: inline-block;
+            margin-top: 0.3rem;
+            font-weight: 500;
+        }
+</style>
+
+<div class="container">
+    <div class="text-center">
+        <h1 class="display-4">Добро пожаловать</h1>
+        <h2>О проекте</h2>
+        <p>
+            <strong>Legacy BookStore</strong> — это веб-приложение интернет-магазина книг, разработанное в учебных целях для демонстрации принципов построения веб-приложений с использованием ASP.NET.
+        </p>
+    </div>
+
+    <h2>Доступные API-эндпоинты</h2>
+    <div class="endpoint-section">
+        <h3>Книги (<code>/api/books</code>)</h3>
+        <ul>
+            <li><strong>GET</strong> <code>/api/books</code> — получить список всех книг</li>
+            <li><strong>GET</strong> <code>/api/books/{id}</code> — получить книгу по ID</li>
+            <li><strong>POST</strong> <code>/api/books</code> — создать новую книгу (требуется JSON тела книги)</li>
+            <li><strong>DELETE</strong> <code>/api/books/{id}</code> — удалить книгу по ID</li>
+        </ul>
+
+        <h3>Пользователи (<code>/api/users</code>)</h3>
+        <ul>
+            <li><strong>GET</strong> <code>/api/users</code> — получить список всех пользователей</li>
+            <li><strong>GET</strong> <code>/api/users/welcome?name=Имя</code> — HTML-страница приветствия (например: <code>/api/users/welcome?name=Alice</code>)</li>
+        </ul>
+    </div>
+
+    <h2>Репозитории</h2>
+    <div class="repo-links">
+        <p>
+            <a href="https://github.com/SFUOrg/LegacyBookStore" target="_blank">🔗 GitHub репозиторий</a>
+        </p>
+        <p>
+            <a href="https://github.com/orgs/SFUOrg/projects/1/views/1" target="_blank">📋 GitHub Project (задачи и прогресс)</a>
+        </p>
+    </div>
+
+    <h2>Разработчики</h2>
+    <ul>
+        <li>Andrei Chernenko</li>
+        <li>Maria Yakovleva</li>
+        <li>Litvinov Alexander</li>
+    </ul>
 </div>
